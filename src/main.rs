@@ -7,7 +7,7 @@ use std::fs;
 #[grammar = "grammar.pest"]
 pub struct JSONParser;
 
-const TODO_TEST_FILE: &str = "./test/test.json";
+//const TODO_TEST_FILE: &str = "./test/test.json";
 
 enum JSONValue<'a> {
     String(&'a str),
@@ -101,7 +101,38 @@ fn parse_json_file(file: &str) -> Result<JSONValue, Error<Rule>> {
 }
 
 fn main() {
-    let file = fs::read_to_string(TODO_TEST_FILE).expect("cannot read file");
-    let json: JSONValue = parse_json_file(&file).expect("");
-    print!("{}", prettier_json(&json, 0))
+    let matches = clap::Command::new("JSON Pretty Printer")
+        .version("0.0.1")
+        .author("Camilo Camargo <camilocamargo49@gmail.com>")
+        .about("Parses and formats JSON files")
+        .arg(
+            clap::Arg::new("file")
+                .help("Path to the JSON file")
+                .required(true)
+                .index(1),
+        )
+        .arg(
+            clap::Arg::new("output")
+                .short('o')
+                .help("Path to the output file")
+                .long("output"),
+        )
+        .get_matches();
+
+    let file_path = matches
+        .get_one::<String>("file")
+        .expect("File path is required");
+    let output_path = matches.get_one::<String>("output");
+
+    let file = fs::read_to_string(file_path).expect("cannot read file");
+    let json: JSONValue = parse_json_file(&file).expect("parse error");
+    let prettified_json = prettier_json(&json, 0);
+
+    match output_path {
+        Some(path) => {
+            fs::write(path, prettified_json).expect("cannot write to file");
+            println!("Prettified JSON written to {}", path);
+        }
+        None => print!("{}", prettified_json),
+    }
 }
