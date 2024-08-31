@@ -1,0 +1,40 @@
+{
+      "name":   "John Doe",
+   "age":  30,
+     "is_student":  false,
+  "address": {
+"street":   "123 Main St",
+      "city":    "Somewhere",
+   "country":   "Nowhere"
+     },
+ "phone_numbers": 
+ [
+    {
+   "type": "home",
+        "number": "123-456-7890"
+  },
+   {
+  "type":    "mobile",
+         "number":  "987-654-3210"
+ }
+   ],
+"favorites": {
+      "colors":   [
+    "red", 
+ "green", 
+   "blue"
+],
+    "foods": [
+      "pizza", 
+"ice cream"
+    ]
+      },
+    "settings": {
+  "notifications":  true,
+     "dark_mode":   false,
+"languages": [
+"English", "Spanish", 
+   "French"
+  ]
+ }
+}
